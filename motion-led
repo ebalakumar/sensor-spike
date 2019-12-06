@@ -1,0 +1,39 @@
+int sensor = 13;  // Digital pin D1
+//int led = 14; // d5 esp 8266 ex
+bool motionDetected = false;
+int lastMotion = 0;
+
+
+void setup() {
+  pinMode(sensor, INPUT);
+//  pinMode(led, OUTPUT);
+  Serial.begin(115200);
+
+}
+
+void loop() {
+  bool currentlyInMotion = sensorDetectsMotion();
+
+  if (currentlyInMotion) {
+    Serial.println("Motion detected!");
+//    digitalWrite(led, HIGH);
+    lastMotion = 0;
+  } else {
+    Serial.println("No motion detected.");
+//    digitalWrite(led, LOW);
+  }
+  
+  motionDetected = currentlyInMotion;
+  delay(1000);
+}
+
+bool sensorDetectsMotion() {
+  long state = digitalRead(sensor);
+  if (state == HIGH) {
+    Serial.println("Motion detected!");
+    return true;
+  } else {
+    Serial.println("No motion detected.");
+    return false;
+  }
+}
